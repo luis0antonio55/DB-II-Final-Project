@@ -13,9 +13,6 @@ load_dotenv()
 # Inicializar la aplicacion Flask
 app = Flask(__name__)
 
-# Configurar la conexion a MongoDB con certificados SSL
-MONGODB_URI = "mongodb://admin:9pe9ZjCbRIN9VXAr@ac-ibgxx8j-shard-00-00.5dod4sb.mongodb.net:27017,ac-ibgxx8j-shard-00-01.5dod4sb.mongodb.net:27017,ac-ibgxx8j-shard-00-02.5dod4sb.mongodb.net:27017/?replicaSet=atlas-mt2xe6-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=employees-cluster"
-
 MONGODB_URI = os.getenv("MONGODB_URI")
 MONGODB_DB = os.getenv("MONGODB_DB", "hr")
 MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION", "empleados")
@@ -32,8 +29,8 @@ client = MongoClient(
     socketTimeoutMS=45000
 )
 
-db =  MONGODB_DB  # Base de datos 'hr'
-empleados_collection = MONGODB_COLLECTION # Coleccion 'empleados'
+db = client[MONGODB_DB]  
+empleados_collection = db[MONGODB_COLLECTION]  
 
 # Configurar Flask-RestX para Swagger
 api = Api(app, version='1.0', title='API de Empleados',
