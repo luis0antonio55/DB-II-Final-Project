@@ -88,6 +88,7 @@ python  crud.py
 
 La API estara disponible en `http://localhost:5000`.
 
+O la puede visitar en `https://proyecto-final-delta-two.vercel.app/`.
   
 
 ## Documentacion Swagger
@@ -100,7 +101,7 @@ Una vez que la aplicacion este en funcionamiento, pueden acceder a la documentac
 
 ```
 
-http://localhost:5000/
+http://localhost:5000/ o https://proyecto-final-delta-two.vercel.app/
 
 ```
 

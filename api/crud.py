@@ -7,18 +7,18 @@ import os
 import certifi
 from dotenv import load_dotenv
 
-# Load environment variables
+# Cargamos las variables de entorno 
 load_dotenv()
 
-# Initialize Flask application
+# Iniciamos flask
 app = Flask(__name__)
 
-# Get MongoDB connection details from environment variables
+# Variables de entorno
 MONGODB_URI = os.getenv("MONGODB_URI")
 MONGODB_DB = os.getenv("MONGODB_DB", "hr")
 MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION", "empleados")
 
-# Set up MongoDB client
+# Mongo client
 client = MongoClient(
     MONGODB_URI,
     tls=True,
@@ -31,18 +31,18 @@ client = MongoClient(
     socketTimeoutMS=45000
 )
 
-# Correctly access database and collection
-db = client[MONGODB_DB]  # Access the 'hr' database
-empleados_collection = db[MONGODB_COLLECTION]  # Access the 'empleados' collection
 
-# Configure Flask-RestX for Swagger
+db = client[MONGODB_DB] 
+empleados_collection = db[MONGODB_COLLECTION]  
+
+# Configurar Flask-RestX para Swagger
 api = Api(app, version='1.0', title='API de Empleados',
           description='API CRUD para gestionar empleados en MongoDB')
 
-# Create a namespace for employee endpoints
+# Crear un namespace para los endpoints de empleados
 ns = api.namespace('empleados', description='Operaciones CRUD de empleados')
 
-# Define models for Swagger documentation
+# Definir modelos para la documentación de Swagger
 departamento_model = api.model('Departamento', {
     'deptno': fields.Integer(required=True, description='Numero de departamento'),
     'dname': fields.String(required=True, description='Nombre del departamento'),
@@ -57,7 +57,6 @@ empleado_model = api.model('Empleado', {
     'departamento': fields.Nested(departamento_model, required=True, description='Departamento')
 })
 
-# Helper function to convert ObjectId to string in responses
 def parse_json(data):
     return json.loads(dumps(data))
 
@@ -149,6 +148,6 @@ class EmpleadosPorDepartamento(Resource):
         ))
         return parse_json(empleados)
 
-# For local development
+# Local
 if __name__ == '__main__':
     app.run(debug=True)
